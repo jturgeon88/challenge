@@ -3,6 +3,9 @@ import { shallow } from 'enzyme';
 import TimerHistoryItem from '../../../src/components/TimerHistoryItem';
 import { displayDate } from '../../../src/utils/timeUtils.js';
 import timeEntrySeeds from '../../../dummyData/timeEntries';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { removeTimeEntry } from '../../../src/utils/timerUtils';
 
 const {
   billable, categories, description, project, endTime, startTime,
@@ -73,5 +76,25 @@ describe('TimerHistoryItem Component', () => {
       .at(6)
       .text();
     expect(time).toEqual('03:15:00');
+  });
+
+  it('has a FontAwesomeIcon delete button', () => {
+    const wrapper = shallow(<TimerHistoryItem
+      billable={billable}
+      categories={categories}
+      description={description}
+      project={project}
+      endTime={endTime}
+      startTime={startTime}
+    />);
+
+    expect(wrapper.contains(
+      <FontAwesomeIcon
+        className={'pointer gray dim'}
+        onClick={removeTimeEntry}
+        icon={faTrashAlt}
+        size="2x"
+      />
+    )).toBe(true);
   });
 });
