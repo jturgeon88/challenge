@@ -95,3 +95,7 @@ html {
 .minwidth-300 {
   min-width: 300px;
 }
+
+.listItem:hover {
+  cursor: pointer;    // replace "pointer" with "default" if the normal arrow is desired
+}

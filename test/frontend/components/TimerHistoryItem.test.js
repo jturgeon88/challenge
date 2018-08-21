@@ -6,7 +6,7 @@ import timeEntrySeeds from '../../../dummyData/timeEntries';
 
 const {
   billable, categories, description, project, endTime, startTime,
-} = timeEntrySeeds[0];
+} = Object.values(timeEntrySeeds())[0];
 
 describe('TimerHistoryItem Component', () => {
   it('renders without crashing', () => {

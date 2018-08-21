@@ -1,9 +1,4 @@
 import { getTimeEntry, createTimeEntry } from '../../src/utils/timerUtils';
-import timeEntrySeeds from '../../dummyData/timeEntries';
-
-beforeEach(() => {
-  createTimeEntry(timeEntrySeeds);
-});
 
 afterEach(() => {
   localStorage.clear();

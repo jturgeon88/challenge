@@ -22,9 +22,9 @@ export function updateTimeEntry(id, timeEntryAttrs) {
 }
 
 export function createTimeEntry(timeEntry) {
-  const id = uuid();
+  const id = `${KEY_PREFIX}${uuid()}`;
 
-  setTimeEntry(`${KEY_PREFIX}${id}`, timeEntry);
+  setTimeEntry(id, timeEntry);
   return id;
 }
 
@@ -33,7 +33,7 @@ export function fetchTimeEntries() {
   // eslint-disable-next-line no-plusplus
   for (let i = 0; i < localStorage.length; i++) {
     const id = localStorage.key(i);
-    if (!id.includes(KEY_PREFIX)) continue;
+    if (!id.includes(KEY_PREFIX)) continue; // eslint-disable-line no-continue
     const entry = getTimeEntry(id);
     allTimeEntries[id] = entry;
   }
