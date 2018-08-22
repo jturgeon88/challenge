@@ -87,4 +87,25 @@ describe('TimerHistoryItem Component', () => {
 
     expect(wrapper.find('.delete-button').length).toEqual(1);
   });
+
+  describe('delete button', () => {
+    it('calls deleteTimeEntry when clicked', () => {
+      const deleteTimeEntry = jest.fn();
+
+      const wrapper = shallow(<TimerHistoryItem
+        billable={billable}
+        categories={categories}
+        description={description}
+        project={project}
+        endTime={endTime}
+        startTime={startTime}
+        deleteTimeEntry={deleteTimeEntry}
+      />);
+
+      const handleClick = jest.fn();
+
+      wrapper.find('.delete-button').simulate('click');
+      expect(deleteTimeEntry).toHaveBeenCalled();
+    });
+  });
 });
