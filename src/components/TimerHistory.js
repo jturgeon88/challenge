@@ -4,7 +4,7 @@ import TimerHistoryItem from './TimerHistoryItem';
 
 export default class TimerHistory extends Component {
   renderHistoryItem() {
-    const { timeEntries } = this.props;
+    const { timeEntries, deleteTimeEntry } = this.props;
 
     return Object.entries(timeEntries).map(([id, entry]) => {
       const {
@@ -20,6 +20,7 @@ export default class TimerHistory extends Component {
           billable={billable}
           startTime={startTime}
           endTime={endTime}
+          deleteTimeEntry={deleteTimeEntry}
         />
       );
     });

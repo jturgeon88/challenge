@@ -6,9 +6,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 export default class TimerHistoryItem extends Component {
+  constructor(props) {
+    super(props);
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick(e) {
+    this.props.deleteTimeEntry(this.props.id);
+  }
+
   render() {
     const {
-      billable, categories, description, project, endTime, startTime,
+      billable, categories, description, project, endTime, startTime, deleteTimeEntry
     } = this.props;
 
     const isTimeOut = endTime !== 0;
@@ -31,11 +41,11 @@ export default class TimerHistoryItem extends Component {
         <div>{displayStartAndEndTimes(startTime, endTime)}</div>
         <div>{displayTimeElapsed(startTime, endTime)}</div>
         <FontAwesomeIcon
-                className={'pointer gray dim'}
-                onClick={removeTimeEntry}
-                icon={faTrashAlt}
-                size="2x"
-              />
+          className='delete-button pointer gray dim'
+          onClick={this.handleClick}
+          icon={faTrashAlt}
+          size="2x"
+        />
       </div>
     );
   }

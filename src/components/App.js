@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { createTimeEntry, fetchTimeEntries } from '../utils/timerUtils';
+import { createTimeEntry, fetchTimeEntries, removeTimeEntry } from '../utils/timerUtils';
 
 import Navbar from './Navbar';
 import TimeEntryForm from './TimeEntryForm';
@@ -14,6 +14,7 @@ export default class Dashboard extends Component {
     };
 
     this.addTimeEntry = this.addTimeEntry.bind(this);
+    this.deleteTimeEntry = this.deleteTimeEntry.bind(this);
   }
 
   componentDidMount() {
@@ -32,6 +33,19 @@ export default class Dashboard extends Component {
     this.retrieveTimeEntries();
   }
 
+  //Remove time entry from local storage and from state
+  deleteTimeEntry(id) {
+    // remove entry from localStorage
+    removeTimeEntry(id);
+
+    // Create newTimeEntries and delete specified entry
+    Object.freeze(this.state);
+    const newTimeEntries = this.state.timeEntries;
+    delete newTimeEntries[id];
+
+    this.setState({timeEntries: newTimeEntries});
+  }
+
   render() {
     const { timeEntries } = this.state;
 
@@ -39,7 +53,7 @@ export default class Dashboard extends Component {
       <div>
         <Navbar />
         <TimeEntryForm addTimeEntry={this.addTimeEntry} />
-        <TimerHistory timeEntries={timeEntries} />
+        <TimerHistory timeEntries={timeEntries} deleteTimeEntry={this.deleteTimeEntry} />
       </div>
     );
   }
