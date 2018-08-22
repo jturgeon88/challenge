@@ -74,4 +74,38 @@ describe('TimerHistoryItem Component', () => {
       .text();
     expect(time).toEqual('03:15:00');
   });
+
+  it('has a delete button', () => {
+    const wrapper = shallow(<TimerHistoryItem
+      billable={billable}
+      categories={categories}
+      description={description}
+      project={project}
+      endTime={endTime}
+      startTime={startTime}
+    />);
+
+    expect(wrapper.find('.delete-button').length).toEqual(1);
+  });
+
+  describe('delete button', () => {
+    it('calls deleteTimeEntry when clicked', () => {
+      const deleteTimeEntry = jest.fn();
+
+      const wrapper = shallow(<TimerHistoryItem
+        billable={billable}
+        categories={categories}
+        description={description}
+        project={project}
+        endTime={endTime}
+        startTime={startTime}
+        deleteTimeEntry={deleteTimeEntry}
+      />);
+
+      const handleClick = jest.fn();
+
+      wrapper.find('.delete-button').simulate('click');
+      expect(deleteTimeEntry).toHaveBeenCalled();
+    });
+  });
 });
