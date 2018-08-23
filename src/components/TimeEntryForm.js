@@ -85,12 +85,12 @@ export default class TimeEntryForm extends Component {
 
   render() {
     const {
-      billable, selectedCategories, selectedProject, startTime,
+      billable, selectedCategories, selectedProject, startTime, description
     } = this.state;
 
     return (
       <div className="mw100 center bg-white br3 h3 pa3 mv3 ba b--black-10 flex justify-between items-center">
-        <Task setDescription={this.setDescription}/>
+        <Task setDescription={this.setDescription} description={description}/>
 
         <ProjectSelect
           setSelectedProject={this.setSelectedProject}
