@@ -21,11 +21,16 @@ export default class TimeEntryForm extends Component {
     super(props);
     this.state = defaultState;
 
+    this.setDescription = this.setDescription.bind(this);
     this.setBillable = this.setBillable.bind(this);
     this.setSelectedProject = this.setSelectedProject.bind(this);
     this.setSelectedCategories = this.setSelectedCategories.bind(this);
     this.setStartTime = this.setStartTime.bind(this);
     this.setEndTime = this.setEndTime.bind(this);
+  }
+
+  setDescription(taskName) {
+    this.setState({description: taskName});
   }
 
   setBillable() {
@@ -85,7 +90,7 @@ export default class TimeEntryForm extends Component {
 
     return (
       <div className="mw100 center bg-white br3 h3 pa3 mv3 ba b--black-10 flex justify-between items-center">
-        <Task />
+        <Task setDescription={this.setDescription}/>
 
         <ProjectSelect
           setSelectedProject={this.setSelectedProject}
