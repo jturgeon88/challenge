@@ -20,4 +20,12 @@ describe('TimeEntryForm', () => {
 
     expect(taskWrapper.props().setDescription).toBe(wrapper.instance().setDescription);
   });
+
+  it('setDescription sets state with new description', () => {
+    const wrapper = shallow(<TimeEntryForm addTimeEntry={addTimeEntry} />);
+    const newDescription = "Best Description Ever";
+
+    wrapper.instance().setDescription(newDescription);
+    expect(wrapper.state().description).toEqual('Best Description Ever');
+  });
 });
