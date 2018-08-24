@@ -11,7 +11,7 @@ This application is a loose clone of the application [Toggl](https://toggl.com).
   - Tests have been written that verify the above.
   - All tests are passing.
   - This README has been updated to reflect any relevant changes (features only).
-  
+
 ### Time
 
 We only expect candidates to spend about 8 hours on the challenge. Note that this does not mean that we expect you to _finish_ all issues in 8 hours. You should read through the issues and strategically select a few challenges that you think you can really nail in that time. Anything past that is bonus. It is better to be thorough with one or two issues than to half-complete all of them.
@@ -57,3 +57,19 @@ In your browser, navigate to `localhost:8080`. You should see the landing page: 
 ## Run the tests
 
 Run `npm test` after installation to confirm that all of the tests pass.
+
+## NEW FEATURES:
+
+### Delete Time Entry
+
+This new feature gives us a convenient delete button on each of the
+TimerHistoryItems in the form of an adorable little trash can icon. When clicked,
+this button will immediately and permanently delete the corresponding time
+entry from the app's state and your browser's localStorage - SO BE CAREFUL!
+
+### Logo Link to Moove-it.com
+
+This feature turns the moove-it logo in our NavBar into a clickable link
+that will navigate to the front page of Moove-it.com. Best of all, it
+will automatically open a new browser tab for you so you can keep working
+in the app.
