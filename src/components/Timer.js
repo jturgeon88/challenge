@@ -23,12 +23,14 @@ export default class Timer extends Component {
 
   handleTimerClick() {
     const { isTiming } = this.state;
-    const { setStartTime, setEndTime } = this.props;
+    const { setStartTime, setEndTime, isPartialEntry } = this.props;
 
     if (!isTiming) {
       this.setState({ isTiming: true });
-      const startTime = createTimestamp();
-      setStartTime(startTime);
+      if (!isPartialEntry) {
+        const startTime = createTimestamp();
+        setStartTime(startTime);
+      }
     } else {
       this.setState({ isTiming: false });
       const endTime = createTimestamp();
@@ -62,6 +64,7 @@ export default class Timer extends Component {
               isTiming={isTiming}
               startTime={startTime}
               handleTimerClick={this.handleTimerClick}
+              isPartialEntry={this.props.isPartialEntry}
             />
           ) : (
             <ManualMode handleManualSubmit={this.handleManualSubmit} />
