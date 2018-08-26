@@ -35,8 +35,20 @@ export function fetchTimeEntries() {
     const id = localStorage.key(i);
     if (!id.includes(KEY_PREFIX)) continue; // eslint-disable-line no-continue
     const entry = getTimeEntry(id);
+    if (entry.endTime == "") continue;
     allTimeEntries[id] = entry;
   }
 
   return allTimeEntries;
+}
+
+export function extractPartialEntry(partialEntry) {
+  for (let i = 0; i < localStorage.length; i++) {
+    const id = localStorage.key(i);
+    if (!id.includes(KEY_PREFIX)) continue; // eslint-disable-line no-continue
+    const entry = getTimeEntry(id);
+    if (entry.endTime == "") return { [id]: entry};
+  }
+
+  return false;
 }
