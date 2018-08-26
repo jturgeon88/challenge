@@ -31,7 +31,11 @@ export default class TimeEntryForm extends Component {
   }
 
   componentDidMount() {
-    const partialEntry = this.props.partialEntry[0];
+    const id = Object.keys(this.props.partialEntry)[0];
+    const partialEntry = this.props.partialEntry[id];
+    console.log('componentDidMount > partialEntry');
+    console.log('partialEntry', partialEntry);
+
     if (partialEntry) {
       this.setState({
         description: partialEntry.description,
@@ -67,14 +71,19 @@ export default class TimeEntryForm extends Component {
   }
 
   setEndTime(endTime) {
-    if (this.props.partialEntry) {
-      const { partialEntry } = this.props;
-      const id = Object.keys(partialEntry)[0];
-      this.setState({ endTime });
-      updateTimeEntry(id, this.state);
-    } else {
+    // if (this.props.partialEntry) {
+    //   const { partialEntry } = this.props;
+    //   // console.log('partialEntry', partialEntry);
+    //   const id = Object.keys(partialEntry)[0];
+    //   this.setState({ endTime });
+    //   // console.log('this.state', this.state);
+    //   updateTimeEntry(id, this.state);
+    //
+    //   // console.log('TimeEntryForm > setEndTime > partialEntry logic')
+    // } else {
+    //   // console.log('TimeEntryForm > setEndTime > NO partialEntry logic')
       this.setState({ endTime }, () => this.saveTimeEntry());
-    }
+    // }
   }
 
   saveTimeEntry() {
@@ -88,14 +97,22 @@ export default class TimeEntryForm extends Component {
     } = this.state;
     const { addTimeEntry } = this.props;
 
-    addTimeEntry({
-      billable,
-      categories: selectedCategories,
-      description,
-      selectedProject,
-      endTime,
-      startTime,
-    });
+    if (this.props.partialEntry) {
+      const { partialEntry } = this.props;
+      const id = Object.keys(partialEntry)[0];
+      updateTimeEntry(id, this.state);
+      this.props.retrieveTimeEntries();
+    } else {
+      addTimeEntry({
+        billable,
+        categories: selectedCategories,
+        description,
+        selectedProject,
+        endTime,
+        startTime,
+      });
+    }
+
 
     this.resetForm();
   }

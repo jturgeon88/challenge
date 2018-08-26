@@ -16,6 +16,7 @@ export default class Dashboard extends Component {
 
     this.addTimeEntry = this.addTimeEntry.bind(this);
     this.deleteTimeEntry = this.deleteTimeEntry.bind(this);
+    this.retrieveTimeEntries = this.retrieveTimeEntries.bind(this);
   }
 
   componentDidMount() {
@@ -55,7 +56,10 @@ export default class Dashboard extends Component {
     return (
       <div>
         <Navbar />
-        <TimeEntryForm addTimeEntry={this.addTimeEntry} partialEntry={this.state.partialEntry} />
+        <TimeEntryForm
+          addTimeEntry={this.addTimeEntry}
+          partialEntry={this.state.partialEntry}
+          retrieveTimeEntries={this.retrieveTimeEntries} />
         <TimerHistory timeEntries={timeEntries} deleteTimeEntry={this.deleteTimeEntry} />
       </div>
     );
