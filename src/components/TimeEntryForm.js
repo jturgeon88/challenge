@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { updateTimeEntry, removeTimeEntry } from '../utils/timerUtils';
 
 import Task from './Task';
 import Billable from './Billable';
@@ -29,6 +30,19 @@ export default class TimeEntryForm extends Component {
     this.setEndTime = this.setEndTime.bind(this);
   }
 
+  componentDidMount() {
+    const partialEntry = this.props.partialEntry[0];
+    if (partialEntry) {
+      this.setState({
+        description: partialEntry.description,
+        selectedProject: partialEntry.selectedProject,
+        selectedCategories: partialEntry.selectedCategories,
+        billable: partialEntry.billable,
+        startTime: partialEntry.startTime
+      });
+    }
+  }
+
   setDescription(taskName) {
     this.setState({description: taskName});
   }
@@ -49,11 +63,18 @@ export default class TimeEntryForm extends Component {
   }
 
   setStartTime(startTime) {
-    this.setState({ startTime });
+    this.setState({ startTime }, () => this.saveTimeEntry());
   }
 
   setEndTime(endTime) {
-    this.setState({ endTime }, () => this.saveTimeEntry());
+    if (this.props.partialEntry) {
+      const { partialEntry } = this.props;
+      const id = Object.keys(partialEntry)[0];
+      this.setState({ endTime });
+      updateTimeEntry(id, this.state);
+    } else {
+      this.setState({ endTime }, () => this.saveTimeEntry());
+    }
   }
 
   saveTimeEntry() {
@@ -87,6 +108,7 @@ export default class TimeEntryForm extends Component {
     const {
       billable, selectedCategories, selectedProject, startTime, description
     } = this.state;
+    const isPartialEntry = !!this.props.partialEntry;
 
     return (
       <div className="mw100 center bg-white br3 h3 pa3 mv3 ba b--black-10 flex justify-between items-center">
@@ -108,6 +130,7 @@ export default class TimeEntryForm extends Component {
           setStartTime={this.setStartTime}
           setEndTime={this.setEndTime}
           startTime={startTime}
+          isPartialEntry={isPartialEntry}
         />
       </div>
     );
