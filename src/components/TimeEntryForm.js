@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { updateTimeEntry, removeTimeEntry, createTimeEntry } from '../utils/timerUtils';
+import { updateTimeEntry, removeTimeEntry, createTimeEntry, clearPartialEntries } from '../utils/timerUtils';
 
 import Task from './Task';
 import Billable from './Billable';
@@ -31,12 +31,9 @@ export default class TimeEntryForm extends Component {
   }
 
   componentDidMount() {
-    const id = Object.keys(this.props.partialEntry)[0];
-    const partialEntry = this.props.partialEntry[id];
-    console.log('componentDidMount > partialEntry');
-    console.log('partialEntry', partialEntry);
-
-    if (partialEntry) {
+    if (this.props.partialEntry) {
+      const id = Object.keys(this.props.partialEntry)[0];
+      const partialEntry = this.props.partialEntry[id];
       this.setState({
         description: partialEntry.description,
         selectedProject: partialEntry.selectedProject,
@@ -111,7 +108,6 @@ export default class TimeEntryForm extends Component {
       const id = Object.keys(partialEntry)[0];
       updateTimeEntry(id, this.state);
       this.props.removePartialEntry();
-      this.props.removePartialEntry();
       this.props.retrieveTimeEntries();
     } else {
       addTimeEntry({
@@ -122,6 +118,7 @@ export default class TimeEntryForm extends Component {
         endTime,
         startTime,
       });
+      clearPartialEntries();
     }
 
 

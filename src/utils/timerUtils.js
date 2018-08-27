@@ -52,3 +52,12 @@ export function extractPartialEntry(partialEntry) {
 
   return false;
 }
+
+export function clearPartialEntries() {
+  for (let i = 0; i < localStorage.length; i++) {
+    const id = localStorage.key(i);
+    if (!id.includes(KEY_PREFIX)) continue; // eslint-disable-line no-continue
+    const entry = getTimeEntry(id);
+    if (entry.endTime == "") removeTimeEntry(id);
+  }
+}
