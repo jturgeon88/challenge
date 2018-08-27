@@ -73,3 +73,7 @@ This feature turns the moove-it logo in our NavBar into a clickable link
 that will navigate to the front page of Moove-it.com. Best of all, it
 will automatically open a new browser tab for you so you can keep working
 in the app.
+
+### Timer Refresh
+
+This feature allows users to start a timer, refresh their page and continue timing as if nothing happened. This feature ensures that all attributes of the in progress timer (description, billing status, etc.) are preserved through the refresh process. It also ensures that the user can continue to modify the attributes after the refresh and all changes will be saved to the final entry upon stopping the timer.
