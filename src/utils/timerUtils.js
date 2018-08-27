@@ -42,7 +42,7 @@ export function fetchTimeEntries() {
   return allTimeEntries;
 }
 
-export function extractPartialEntry(partialEntry) {
+export function extractPartialEntry() {
   for (let i = 0; i < localStorage.length; i++) {
     const id = localStorage.key(i);
     if (!id.includes(KEY_PREFIX)) continue; // eslint-disable-line no-continue
