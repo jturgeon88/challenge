@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { updateTimeEntry, removeTimeEntry } from '../utils/timerUtils';
+import { updateTimeEntry, removeTimeEntry, createTimeEntry } from '../utils/timerUtils';
 
 import Task from './Task';
 import Billable from './Billable';
@@ -67,23 +67,32 @@ export default class TimeEntryForm extends Component {
   }
 
   setStartTime(startTime) {
-    this.setState({ startTime }, () => this.saveTimeEntry());
+    this.setState({ startTime }, () => this.savePartialEntry());
   }
 
   setEndTime(endTime) {
-    // if (this.props.partialEntry) {
-    //   const { partialEntry } = this.props;
-    //   // console.log('partialEntry', partialEntry);
-    //   const id = Object.keys(partialEntry)[0];
-    //   this.setState({ endTime });
-    //   // console.log('this.state', this.state);
-    //   updateTimeEntry(id, this.state);
-    //
-    //   // console.log('TimeEntryForm > setEndTime > partialEntry logic')
-    // } else {
-    //   // console.log('TimeEntryForm > setEndTime > NO partialEntry logic')
-      this.setState({ endTime }, () => this.saveTimeEntry());
-    // }
+    this.setState({ endTime }, () => this.saveTimeEntry());
+  }
+
+  savePartialEntry() {
+    const {
+      billable,
+      selectedCategories,
+      description,
+      selectedProject,
+      startTime,
+      endTime,
+    } = this.state;
+    const { addTimeEntry } = this.props;
+
+    createTimeEntry({
+      billable,
+      categories: selectedCategories,
+      description,
+      selectedProject,
+      endTime,
+      startTime,
+    });
   }
 
   saveTimeEntry() {
@@ -101,6 +110,8 @@ export default class TimeEntryForm extends Component {
       const { partialEntry } = this.props;
       const id = Object.keys(partialEntry)[0];
       updateTimeEntry(id, this.state);
+      this.props.removePartialEntry();
+      this.props.removePartialEntry();
       this.props.retrieveTimeEntries();
     } else {
       addTimeEntry({
