@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { updateTimeEntry, removeTimeEntry, createTimeEntry, clearPartialEntries } from '../utils/timerUtils';
 
 import Task from './Task';
 import Billable from './Billable';
@@ -20,7 +21,18 @@ export default class TimeEntryForm extends Component {
   constructor(props) {
     super(props);
     this.state = defaultState;
-
+    if (this.props.partialEntry) {
+      const id = Object.keys(this.props.partialEntry)[0];
+      const partialEntry = this.props.partialEntry[id];
+      this.state = {
+        description: partialEntry.description,
+        selectedProject: partialEntry.selectedProject,
+        selectedCategories: partialEntry.selectedCategories,
+        billable: partialEntry.billable,
+        startTime: partialEntry.startTime
+      };
+    }
+    
     this.setDescription = this.setDescription.bind(this);
     this.setBillable = this.setBillable.bind(this);
     this.setSelectedProject = this.setSelectedProject.bind(this);
@@ -49,11 +61,32 @@ export default class TimeEntryForm extends Component {
   }
 
   setStartTime(startTime) {
-    this.setState({ startTime });
+    this.setState({ startTime }, () => this.savePartialEntry());
   }
 
   setEndTime(endTime) {
     this.setState({ endTime }, () => this.saveTimeEntry());
+  }
+
+  savePartialEntry() {
+    const {
+      billable,
+      selectedCategories,
+      description,
+      selectedProject,
+      startTime,
+      endTime,
+    } = this.state;
+    const { addTimeEntry } = this.props;
+
+    createTimeEntry({
+      billable,
+      categories: selectedCategories,
+      description,
+      selectedProject,
+      endTime,
+      startTime,
+    });
   }
 
   saveTimeEntry() {
@@ -67,14 +100,24 @@ export default class TimeEntryForm extends Component {
     } = this.state;
     const { addTimeEntry } = this.props;
 
-    addTimeEntry({
-      billable,
-      categories: selectedCategories,
-      description,
-      selectedProject,
-      endTime,
-      startTime,
-    });
+    if (this.props.partialEntry) {
+      const { partialEntry } = this.props;
+      const id = Object.keys(partialEntry)[0];
+      updateTimeEntry(id, this.state);
+      this.props.removePartialEntry();
+      this.props.retrieveTimeEntries();
+    } else {
+      addTimeEntry({
+        billable,
+        categories: selectedCategories,
+        description,
+        selectedProject,
+        endTime,
+        startTime,
+      });
+      clearPartialEntries();
+    }
+
 
     this.resetForm();
   }
@@ -87,6 +130,7 @@ export default class TimeEntryForm extends Component {
     const {
       billable, selectedCategories, selectedProject, startTime, description
     } = this.state;
+    const isPartialEntry = !!this.props.partialEntry;
 
     return (
       <div className="mw100 center bg-white br3 h3 pa3 mv3 ba b--black-10 flex justify-between items-center">
@@ -108,6 +152,7 @@ export default class TimeEntryForm extends Component {
           setStartTime={this.setStartTime}
           setEndTime={this.setEndTime}
           startTime={startTime}
+          isPartialEntry={isPartialEntry}
         />
       </div>
     );

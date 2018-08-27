@@ -17,6 +17,12 @@ export default class TimerMode extends Component {
     this.stopTimer = this.stopTimer.bind(this);
   }
 
+  componentDidMount() {
+    if (this.props.isPartialEntry) {
+      this.startTimer();
+    }
+  }
+
   componentWillUnmount() {
     clearInterval(this.timer);
   }

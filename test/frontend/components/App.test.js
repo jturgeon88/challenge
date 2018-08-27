@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import App from '../../../src/components/App';
+import { createTimeEntry } from '../../../src/utils/timerUtils';
 import timeEntrySeeds from '../../../dummyData/timeEntries';
 
 
@@ -49,5 +50,27 @@ describe('App Component', () => {
 
     wrapper.instance().deleteTimeEntry(1);
     expect(Object.keys(wrapper.state().timeEntries).length).toEqual(1);
+  });
+
+  it('sets partialEntry to false if no partialEntry', () => {
+    const wrapper = shallow(<App />);
+
+    expect(wrapper.state().partialEntry).toBe(false);
+  });
+
+  it('sets partialEntry correctly if one exists', () => {
+    const noEndTimeEntry = {
+      description: 'This task has no endTime',
+      selectedProject: '',
+      selectedCategories: [],
+      billable: false,
+      startTime: '',
+      endTime: ''
+    };
+    const key = createTimeEntry(noEndTimeEntry);
+    const wrapper = shallow(<App />);
+
+    expect(wrapper.state().partialEntry[key].description).toBe('This task has no endTime');
+
   });
 });

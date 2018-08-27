@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { createTimeEntry, fetchTimeEntries, removeTimeEntry } from '../utils/timerUtils';
+import { createTimeEntry, fetchTimeEntries, removeTimeEntry, extractPartialEntry } from '../utils/timerUtils';
 
 import Navbar from './Navbar';
 import TimeEntryForm from './TimeEntryForm';
@@ -11,14 +11,21 @@ export default class Dashboard extends Component {
     super(props);
     this.state = {
       timeEntries: {},
+      partialEntry: extractPartialEntry()
     };
 
     this.addTimeEntry = this.addTimeEntry.bind(this);
     this.deleteTimeEntry = this.deleteTimeEntry.bind(this);
+    this.retrieveTimeEntries = this.retrieveTimeEntries.bind(this);
+    this.removePartialEntry = this.removePartialEntry.bind(this);
   }
 
   componentDidMount() {
     this.retrieveTimeEntries();
+  }
+
+  removePartialEntry() {
+    this.setState({ partialEntry: false });
   }
 
   retrieveTimeEntries() {
@@ -52,7 +59,11 @@ export default class Dashboard extends Component {
     return (
       <div>
         <Navbar />
-        <TimeEntryForm addTimeEntry={this.addTimeEntry} />
+        <TimeEntryForm
+          addTimeEntry={this.addTimeEntry}
+          partialEntry={this.state.partialEntry}
+          retrieveTimeEntries={this.retrieveTimeEntries}
+          removePartialEntry={this.removePartialEntry} />
         <TimerHistory timeEntries={timeEntries} deleteTimeEntry={this.deleteTimeEntry} />
       </div>
     );
