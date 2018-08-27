@@ -21,27 +21,24 @@ export default class TimeEntryForm extends Component {
   constructor(props) {
     super(props);
     this.state = defaultState;
-
+    if (this.props.partialEntry) {
+      const id = Object.keys(this.props.partialEntry)[0];
+      const partialEntry = this.props.partialEntry[id];
+      this.state = {
+        description: partialEntry.description,
+        selectedProject: partialEntry.selectedProject,
+        selectedCategories: partialEntry.selectedCategories,
+        billable: partialEntry.billable,
+        startTime: partialEntry.startTime
+      };
+    }
+    
     this.setDescription = this.setDescription.bind(this);
     this.setBillable = this.setBillable.bind(this);
     this.setSelectedProject = this.setSelectedProject.bind(this);
     this.setSelectedCategories = this.setSelectedCategories.bind(this);
     this.setStartTime = this.setStartTime.bind(this);
     this.setEndTime = this.setEndTime.bind(this);
-  }
-
-  componentDidMount() {
-    if (this.props.partialEntry) {
-      const id = Object.keys(this.props.partialEntry)[0];
-      const partialEntry = this.props.partialEntry[id];
-      this.setState({
-        description: partialEntry.description,
-        selectedProject: partialEntry.selectedProject,
-        selectedCategories: partialEntry.selectedCategories,
-        billable: partialEntry.billable,
-        startTime: partialEntry.startTime
-      });
-    }
   }
 
   setDescription(taskName) {
